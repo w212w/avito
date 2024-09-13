@@ -1,7 +1,14 @@
-.idea
-*.iml
-.git/
-.gradle
-gradle
-out/
+*.test
+*.out
+
+# Logs
+*.log
+
+.idea/
+.vscode/
+
+# Environment variables
+.env
+
+.dockerignore
 Dockerfile
