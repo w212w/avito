@@ -7,6 +7,7 @@ type Bid struct {
 	Status      string `json:"status"`
 	TenderID    string `json:"tenderId"`
 	AuthorID    string `json:"authorId"`
+	AuthorType  string `json:"authorType"`
 	Version     int    `json:"version"`
 	CreatedAt   string `json:"createdAt"`
 }
