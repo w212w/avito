@@ -9,7 +9,7 @@ import (
 )
 
 func CreateTender(tender *models.Tender) error {
-	query := `INSERT INTO tenders (id, name, description, service_type, status, organization_id, version, created_at) 
+	query := `INSERT INTO tender (id, name, description, servicetype, status, organizationid, version, createdat) 
               VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
 
 	tender.ID = uuid.New().String()
