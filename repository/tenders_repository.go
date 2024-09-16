@@ -76,12 +76,12 @@ func UpdateTenderStatus(tenderID, status string) error {
 
 func GetTendersByUsername(username string, limit, offset int) ([]models.Tender, error) {
 	query := `
-		SELECT tender.id, tender.name, tender.description, tender.service_type, tender.status, tender.organization_id, tender.version, tender.created_at
+		SELECT tender.id, tender.name, tender.description, tender.servicetype, tender.status, tender.organizationid, tender.version, tender.createdat
 		FROM tender
-		WHERE tender.organization_id = (
+		WHERE tender.organizationid = (
 			SELECT organization_responsible.organization_id
 			FROM organization_responsible
-			JOIN employee ON organization_responsible.employee_id = employee.id
+			JOIN employee ON organization_responsible.user_id = employee.id
 			WHERE employee.username = $1
 		)
 		ORDER BY tender.name
