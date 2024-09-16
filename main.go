@@ -35,6 +35,7 @@ func main() {
 
 	r.HandleFunc("/api/ping", handlers.PingHandler).Methods("GET")
 	r.HandleFunc("/api/tenders", handlers.TenderListHandler).Methods("GET")
+	r.HandleFunc("/api/tenders/my", handlers.GetUserTendersHandler).Methods("GET")
 	r.HandleFunc("/api/tenders/new", handlers.NewTenderHandler).Methods("POST")
 	r.HandleFunc("/api/tenders/status", handlers.UpdateTenderStatusHandler).Methods("PATCH")
 	r.HandleFunc("/api/bids/new", handlers.NewBidHandler).Methods("POST")

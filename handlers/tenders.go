@@ -71,3 +71,33 @@ func UpdateTenderStatusHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(requestData)
 }
+
+func GetUserTendersHandler(w http.ResponseWriter, r *http.Request) {
+	username := r.URL.Query().Get("username")
+	if username == "" {
+		http.Error(w, "Username is required", http.StatusBadRequest)
+		return
+	}
+
+	limitParam := r.URL.Query().Get("limit")
+	offsetParam := r.URL.Query().Get("offset")
+
+	limit, err := strconv.Atoi(limitParam)
+	if err != nil || limit <= 0 {
+		limit = 10
+	}
+
+	offset, err := strconv.Atoi(offsetParam)
+	if err != nil || offset < 0 {
+		offset = 0
+	}
+
+	tenders, err := repository.GetTendersByUsername(username, limit, offset)
+	if err != nil {
+		http.Error(w, "Failed to fetch tenders", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(tenders)
+}
