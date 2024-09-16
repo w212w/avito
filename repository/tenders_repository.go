@@ -73,3 +73,36 @@ func UpdateTenderStatus(tenderID, status string) error {
 
 	return nil
 }
+
+func GetTendersByUsername(username string, limit, offset int) ([]models.Tender, error) {
+	query := `
+		SELECT tender.id, tender.name, tender.description, tender.servicetype, tender.status, tender.organizationid, tender.version, tender.createdat
+		FROM tender
+		WHERE tender.organizationid = (
+			SELECT organization_responsible.organization_id
+			FROM organization_responsible
+			JOIN employee ON organization_responsible.user_id = employee.id
+			WHERE employee.username = $1
+		)
+		ORDER BY tender.name
+		LIMIT $2 OFFSET $3
+	`
+
+	rows, err := GetDB().Query(query, username, limit, offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var tenders []models.Tender
+	for rows.Next() {
+		var tender models.Tender
+		err := rows.Scan(&tender.ID, &tender.Name, &tender.Description, &tender.ServiceType, &tender.Status, &tender.OrganizationID, &tender.Version, &tender.CreatedAt)
+		if err != nil {
+			return nil, err
+		}
+		tenders = append(tenders, tender)
+	}
+
+	return tenders, nil
+}
